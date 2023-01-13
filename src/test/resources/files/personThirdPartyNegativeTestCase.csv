@@ -1,0 +1,4 @@
+No;Desc;Request;Res_StatusCode;Res_Body;Mock_Res_Body;Mock_Param;Mock_Res_StatusCode
+TC-01;HALO1;{"id":100};404;Error access to third party API; {"createdAt":"2023-01-07T21:05:13.424Z","name":"unknown","email":"unknown","status":false};100;404
+TC-03;HALO3;{"id":150};404;Missing Mandatory property KTP Number;{"createdAt":"2023-01-07T21:06:13.424Z","name":"unknown2","email":"unknown","status":false};150;400
+TC-02;HALO2;{"id":300};404;Error access to third party API;{"createdAt":"2023-01-07T21:04:13.424Z","name":"unknown1","email":"unknown","status":false};300;302

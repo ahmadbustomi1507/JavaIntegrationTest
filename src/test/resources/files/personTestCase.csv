@@ -1,2 +1,9 @@
 No;Desc;Request;Res_Http_Expected;Expected_Res_Body
 TC-01;HALO;{"id":1};200;{"name":"Ainul yaqin","id":1,"email":"test-apa-pagi@fisclouds.com"}
+TC-02;HALO;{"id":1};200;{"name":"Ainul yaqin","id":1,"email":"test-apa-pagi@fisclouds.com"}
+TC-03;HALO;{"id":1};200;{"name":"Ainul yaqin","id":1,"email":"test-apa-pagi@fisclouds.com"}
+TC-04;HALO;{"id":1};200;{"name":"Ainul yaqin","id":1,"email":"test-apa-pagi@fisclouds.com"}
+TC-05;HALO;{"id":1};200;{"name":"Ainul yaqin","id":1,"email":"test-apa-pagi@fisclouds.com"}
+TC-06;HALO;{"id":1};200;{"name":"Ainul yaqin","id":1,"email":"test-apa-pagi@fisclouds.com"}
+TC-07;HALO;{"id":1};200;{"name":"Ainul yaqin","id":1,"email":"test-apa-pagi@fisclouds.com"}
+TC-08;HALO;{"id":1};200;{"name":"Ainul yaqin","id":1,"email":"test-apa-pagi@fisclouds.com"}

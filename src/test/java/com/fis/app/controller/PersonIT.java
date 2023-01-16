@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.mockserver.client.MockServerClient;
@@ -25,6 +27,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.event.annotation.AfterTestMethod;
+import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,7 +36,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fis.app.DemoServiceTests;
 import com.fis.app.dto.PersonDto;
 import com.fis.app.dto.PersonRequestDto;
-
+import io.qameta.allure.Description;
+import io.qameta.allure.Allure;
 @DisplayName("Person API Integration Test")
 @Log4j2
 public class PersonIT extends DemoServiceTests{
@@ -49,7 +54,15 @@ public class PersonIT extends DemoServiceTests{
 	private String getPersonAPIThirdParty() {
 		return "/api/get-data-from-third-party";
 	}
-	
+
+	@BeforeEach
+	@Before
+	@BeforeClass
+	void init(){
+		log.info("before test");
+		Allure.step("before test");
+	}
+
 	/**
 	 * TEST POSITIVE CASE /api/get-data
 	 * 
@@ -65,13 +78,14 @@ public class PersonIT extends DemoServiceTests{
 	@Sql(value = { "classpath:db/personDataIT.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 	@ParameterizedTest
 	@CsvFileSource(resources = "/files/personTestCase.csv", numLinesToSkip = 1, delimiter = ';')
+	@Description("before method description")
 	public void personAPIPositiveTest(String no, String testName, String request, Integer httpStatus, String response) throws JsonMappingException, JsonProcessingException {
-		
+		Allure.description(testName);
 		PersonRequestDto personRequest = this.mapper().readValue(request, PersonRequestDto.class);
 		PersonDto personResponseExpected = this.mapper().readValue(response, PersonDto.class);
-		
+		Allure.step("my first step is here");
 		ResponseEntity<PersonDto> responseApi = testRestTemplate.postForEntity(this.getPersonAPI(), personRequest, PersonDto.class);
-	
+		Allure.step("my second step is here");
 		assertEquals(httpStatus, responseApi.getStatusCode().value());
 		assertEquals(personResponseExpected.getEmail(), responseApi.getBody().getEmail());
 		assertEquals(personResponseExpected.getName(), responseApi.getBody().getName());

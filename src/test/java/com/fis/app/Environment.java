@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Log4j2
 public class Environment {
 	@Autowired
-	protected static RedisTemplate<String, String> redisTemplate;
+	protected RedisTemplate<String, String> redisTemplate;
 	@Autowired
 	protected TestRestTemplate testRestTemplate;
 	@Autowired

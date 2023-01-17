@@ -39,6 +39,12 @@ public class PersonIT extends Environment {
 
 	//mvn test -Dtest=PersonIT#personAPIThirdPartyNegativeTest
 
+	@Autowired
+	private TestRestTemplate testRestTemplate;
+	private String getPersonAPI() {
+		return "/api/get-data";
+	}
+
 	/**
 	 * TEST POSITIVE CASE /api/get-data
 	 * 
@@ -57,9 +63,14 @@ public class PersonIT extends Environment {
 	@Description("before method description")
 	public void personAPIPositiveTest(String no, String testName, String request, Integer httpStatus, String response) throws JsonMappingException, JsonProcessingException {
 		Allure.description(testName);
+		log.info("my request " + request);
 		PersonRequestDto personRequest = this.mapper().readValue(request, PersonRequestDto.class);
 		PersonDto personResponseExpected = this.mapper().readValue(response, PersonDto.class);
+		log.info("send request");
 		ResponseEntity<PersonDto> responseApi = testRestTemplate.postForEntity(this.getPersonAPI(), personRequest, PersonDto.class);
+		log.info("testing " + responseApi.toString());
+		log.info("testing " + responseApi.getBody());
+		log.info("success send request");
 		assertEquals(httpStatus, responseApi.getStatusCode().value());
 		assertEquals(personResponseExpected.getEmail(), responseApi.getBody().getEmail());
 		assertEquals(personResponseExpected.getName(), responseApi.getBody().getName());

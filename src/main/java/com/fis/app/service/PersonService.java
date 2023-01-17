@@ -39,7 +39,7 @@ public class PersonService {
 		
 		PersonDto d = new PersonDto();
 		
-		Person p = personRepository.findById((Integer) dto.getId())
+		Person p = personRepository.findById( dto.getId())
 				.orElseThrow(()->new PersonException("Id Not Found"));
 
 		d.setId(p.getId());
@@ -67,7 +67,7 @@ public class PersonService {
 		PersonDto d = new PersonDto();
 
 		d.setEmail(res.getBody().getEmail());
-		d.setId((Integer) p.getId());
+		d.setId( p.getId());
 		d.setName(res.getBody().getName());
 		
 		return d;

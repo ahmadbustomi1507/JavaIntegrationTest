@@ -1,2 +1,2 @@
 No;Desc;Request;Res_Http_Expected;Expected_Res_Body;inputIdData;BodyInput
-TC-01;HALO;{"id":"1"};200;{"id":1,"name":"Ainul yaqin","status":null,"email":"test-apa-pagi@fisclouds.com"};1;{"id":1,"name":"Ainul yaqin","status":null,"email":"test-apa-pagi@fisclouds.com"}
+TC-01;HALO;{"id":1};200;{"id":1,"name":"Ainul yaqin","status":null,"email":"test-apa-pagi@fisclouds.com"};1;{"id":1,"name":"Ainul yaqin","status":null,"email":"test-apa-pagi@fisclouds.com"}

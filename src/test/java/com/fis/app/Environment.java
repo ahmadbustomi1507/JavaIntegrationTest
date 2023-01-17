@@ -32,8 +32,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Environment {
 	@Autowired
 	protected RedisTemplate<String, String> redisTemplate;
-	@Autowired
-	protected TestRestTemplate testRestTemplate;
+//	@Autowired
+//	protected TestRestTemplate testRestTemplate;
 	@Autowired
 	protected RedisTemplate<String, String> redistemplate;
 	@Autowired
@@ -73,13 +73,13 @@ public class Environment {
 	 * down of container after each test class executed
 	 */
 	static {
-		redis.start();
+//		redis.start();
 		postgreDBContainer.start();
 		mockServerContainer.start();
 	}
-	protected String getPersonAPI() {
-		return "/api/get-data";
-	}
+//	protected String getPersonAPI() {
+//		return "/api/get-data";
+//	}
 	protected String getPersonAPIThirdParty() {
 		return "/api/get-data-from-third-party";
 	}

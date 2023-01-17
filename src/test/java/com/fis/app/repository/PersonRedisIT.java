@@ -11,6 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -21,18 +23,20 @@ import com.fis.app.dto.PersonRequestDto;
 public class PersonRedisIT extends Environment {
 
     ////mvn test allure:report -Dtest=PersonRedisIT#personredisPositiveTest
-
+    @Autowired
+    protected TestRestTemplate testRestTemplate;
     @Order(1)
     @ParameterizedTest
     @CsvFileSource(resources = "/files/personRedisPositiveTestCase.csv", numLinesToSkip = 1, delimiter = ';')
     public void personredisPositiveTest(String no, String testName, String request, Integer httpStatus, String response,String inputid,String inputdata) throws JsonMappingException, JsonProcessingException, JSONException {
         log.info("Starting test redis");
-        JSONObject object = new JSONObject(request);
+//        JSONObject object = new JSONObject(request);
+        PersonRequestDto personRequest = this.mapper().readValue(request, PersonRequestDto.class);
         redistemplate.opsForValue().set(inputid, inputdata);
-        PersonRequestDto personRequest = new PersonRequestDto();
+//        PersonRequestDto personRequest = new PersonRequestDto();
 
-        personRequest.setId((String)object.get("id"));
-
+//        personRequest.setId((String)object.get("id"));
+//        personRequest.setId(object.get("id"));
 
         ResponseEntity<String> responseApi = testRestTemplate.postForEntity(this.getPersonRedis(), personRequest, String.class);
 

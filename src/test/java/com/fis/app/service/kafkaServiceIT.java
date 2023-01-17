@@ -7,6 +7,7 @@ import com.fis.app.dto.PersonDto;
 import com.fis.app.utils.JSONUtils;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.mockito.ArgumentCaptor;
@@ -22,12 +23,8 @@ import static org.mockito.Mockito.verify;
 @Log4j2
 public class kafkaServiceIT extends Environment {
     // mvn test -Dtest=kafkaServiceIT#sampleKafkaProduceAndConsumeTest
-    @Autowired
-    private KafkaProducerService kafkaProducerService;
 
-    @MockBean
-    private PersonService personService;
-
+    @Order(1)
     @ParameterizedTest
     @CsvFileSource(resources = "/files/sampleKafkaTest.csv", numLinesToSkip = 1, delimiter = ';')
     void sampleKafkaProduceAndConsumeTest(String no, String desc,String produceMessage,String consumeMessage)throws JsonMappingException, JsonProcessingException {

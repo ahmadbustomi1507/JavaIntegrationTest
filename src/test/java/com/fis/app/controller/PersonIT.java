@@ -39,27 +39,6 @@ public class PersonIT extends Environment {
 
 	//mvn test -Dtest=PersonIT#personAPIThirdPartyNegativeTest
 
-	@Rule
-	public TestName name= new TestName();
-	@Autowired
-	private TestRestTemplate testRestTemplate;
-	
-	private String getPersonAPI() {
-		return "/api/get-data";
-	}
-	
-	private String getPersonAPIThirdParty() {
-		return "/api/get-data-from-third-party";
-	}
-
-	@BeforeEach
-	@Before
-	@BeforeClass
-	void init(){
-		log.info("before test");
-		Allure.step("before test");
-	}
-
 	/**
 	 * TEST POSITIVE CASE /api/get-data
 	 * 
@@ -73,39 +52,19 @@ public class PersonIT extends Environment {
 	 */
 	@Order(1)
 	@Sql(value = { "classpath:db/personDataIT.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-	@ParameterizedTest(name = "[{index}] {0}")
+	@ParameterizedTest(name = "[{index}] {0} {1}")
 	@CsvFileSource(resources = "/files/personTestCase.csv", numLinesToSkip = 1, delimiter = ';')
 	@Description("before method description")
 	public void personAPIPositiveTest(String no, String testName, String request, Integer httpStatus, String response) throws JsonMappingException, JsonProcessingException {
 		Allure.description(testName);
 		PersonRequestDto personRequest = this.mapper().readValue(request, PersonRequestDto.class);
 		PersonDto personResponseExpected = this.mapper().readValue(response, PersonDto.class);
-		Allure.step("my first step is here");
 		ResponseEntity<PersonDto> responseApi = testRestTemplate.postForEntity(this.getPersonAPI(), personRequest, PersonDto.class);
-		Allure.step("my second step is here");
 		assertEquals(httpStatus, responseApi.getStatusCode().value());
 		assertEquals(personResponseExpected.getEmail(), responseApi.getBody().getEmail());
 		assertEquals(personResponseExpected.getName(), responseApi.getBody().getName());
 	}
 
-//	@ParameterizedTest
-	@ParameterizedTest
-	@CsvFileSource(resources = "/files/personTestCase.csv", numLinesToSkip = 1, delimiter = ';')
-	@DisplayName("This is an allure test sample")
-	public void personAPIAllureTest(String no, String testName, String request, Integer httpStatus, String response) throws JsonMappingException, JsonProcessingException{
-		Allure.description("personAllure");
-		log.info(testName);
-	}
-
-	@Test
-	public void personAPIAllureTest2(){
-		Allure.description("personAllure");
-	}
-
-	@Test
-	public void personAPIAllureTest3(){
-		Allure.description("personAllure");
-	}
 	@Order(2)
 	@Sql(value = { "classpath:db/personDataIT.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 	@ParameterizedTest
@@ -113,13 +72,7 @@ public class PersonIT extends Environment {
 	public void personAPINegativeTest(String no, String testName, String request, Integer httpStatus, String response) throws JsonMappingException, JsonProcessingException {
 		log.info("Executing Test : "+no + " " +testName );
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-
-//		PersonRequestDto personRequest = this.mapper().readValue(request, PersonRequestDto.class);
-//		String req = ow.writeValueAsString(personRequest);
 		log.info("Request:\n"	+request);
-
-//		ResponseEntity<PersonDto> responseApi = testRestTemplate.postForEntity(this.getPersonAPI(), personRequest, PersonDto.class);
-//		ResponseEntity<String> responseApi = testRestTemplate.postForEntity(this.getPersonAPI(), personRequest, String.class);
 		ResponseEntity<String> responseApi = testRestTemplate.postForEntity(this.getPersonAPI(), request, String.class);
 
 		String res = ow.writeValueAsString(responseApi);
@@ -128,7 +81,6 @@ public class PersonIT extends Environment {
 		assertEquals(httpStatus, responseApi.getStatusCode().value());
 		assertEquals(response,responseApi.getBody().toString());
 	}
-
 
 	@Order(3)
 	@ParameterizedTest
@@ -174,12 +126,7 @@ public class PersonIT extends Environment {
 												String mockExpected,
 												Integer mockQueryparam,
 												Integer mockStatusCode) throws InterruptedException,JsonMappingException, JsonProcessingException {
-		log.info("Executing Test : "+no);
-
 		PersonRequestDto personRequest = this.mapper().readValue(request, PersonRequestDto.class);
-//		PersonDto personResponseExpected = this.mapper().readValue(response, PersonDto.class);
-
-//		String name=mockQueryparam+"";
 		String path = "/api/v1/users/"+mockQueryparam;
 		log.info("Create api with endpoint " + path);
 		MockServerClient mockServerClient = new MockServerClient(mockServerContainer.getHost(), mockServerContainer.getServerPort());
@@ -192,22 +139,14 @@ public class PersonIT extends Environment {
 						.withBody(mockExpected)
 						.withHeaders(new Header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()) )
 						.withStatusCode(mockStatusCode));
-		Thread.sleep(300000);
 
-
-//		ResponseEntity<PersonDto> responseApi = testRestTemplate.postForEntity(this.getPersonAPIThirdParty(), personRequest, PersonDto.class);
 		ResponseEntity<String> responseApi = testRestTemplate.postForEntity(this.getPersonAPIThirdParty(), personRequest, String.class);
 
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		String req = ow.writeValueAsString(personRequest);
 		log.info("Request: \n"+req);
 
-
-//		String res = ow.writeValueAsString(responseApi);
 		log.info("Response : \n"+responseApi);
-
-//		assertEquals(personResponseExpected.getEmail(), responseApi.getBody().getEmail());
-//		assertEquals(personResponseExpected.getName(), responseApi.getBody().getName());
 		assertEquals(httpStatus, responseApi.getStatusCode().value());
 		assertEquals(response,responseApi.getBody().toString());
 	}

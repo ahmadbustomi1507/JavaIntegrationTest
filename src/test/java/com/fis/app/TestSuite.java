@@ -9,5 +9,5 @@ import org.junit.platform.suite.api.Suite;
         PersonIT.class,
         kafkaServiceIT.class
 })
-public class __IntegrationTestSuite {
+public class TestSuite {
 }

@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class PersonRequestDto {
-	private Integer id;
+public class PersonRequestDto<T> {
+	private T id;
 }

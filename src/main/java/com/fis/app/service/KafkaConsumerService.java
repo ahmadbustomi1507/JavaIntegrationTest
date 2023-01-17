@@ -22,12 +22,11 @@ public class KafkaConsumerService {
         this.personService = personService;
     }
 
-//    @KafkaListener(topics = "com.kafka.person", groupId = "kafka-person-listener")
     @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "${spring.kafka.consumer.group-id}")
     public void logKafkaMessages(String data) {
         log.info("Incoming request message {} ",data);
         PersonDto personDto = JSONUtils.convertToObject(data, PersonDto.class);
-        personService.save(personDto);
+//        personService.save(personDto);
         log.info("Success consume message {} ",data);
     }
 

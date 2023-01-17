@@ -1,8 +1,10 @@
 package com.fis.app.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fis.app.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +29,10 @@ public class PersonController {
 	@Transactional
 	public PersonDto getPersonFromThirdParty (@RequestBody PersonRequestDto p) throws Exception {
 		return personService.getPersonFromThirdParty(p);
+	}
+	@PostMapping("api/get-person")
+	@Transactional
+	public Person getpersonredis(@RequestBody PersonRequestDto p) throws JsonMappingException, JsonProcessingException {
+		return personService.getpersonRedis(p);
 	}
 }

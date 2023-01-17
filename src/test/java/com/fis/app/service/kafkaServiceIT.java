@@ -2,19 +2,15 @@ package com.fis.app.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fis.app.KafkaServiceTests;
+import com.fis.app.Environment;
 import com.fis.app.dto.PersonDto;
 import com.fis.app.utils.JSONUtils;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,7 +20,7 @@ import static org.mockito.Mockito.verify;
 
 @DisplayName("Kafka service integration Test")
 @Log4j2
-public class kafkaServiceIT extends KafkaServiceTests {
+public class kafkaServiceIT extends Environment {
     // mvn test -Dtest=kafkaServiceIT#sampleKafkaProduceAndConsumeTest
     @Autowired
     private KafkaProducerService kafkaProducerService;

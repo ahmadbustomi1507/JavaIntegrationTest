@@ -13,7 +13,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -30,7 +29,7 @@ import static org.mockito.Mockito.verify;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Log4j2
-public class KafkaServiceTests {
+public class __KafkaServiceTests {
     @Value("${spring.kafka.topic.name}")
     protected String topic;
     @Container

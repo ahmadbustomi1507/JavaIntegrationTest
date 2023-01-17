@@ -1,8 +1,11 @@
 package com.fis.app.service;
 
-import org.mockserver.model.HttpStatusCode;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +25,8 @@ public class PersonService {
 
 	@Value("${demo.service.test.api-third-party}")
 	private String apiThirdParty;
-
+	@Autowired
+	private RedisTemplate<String, String> redistemplate;
 	@Autowired
 	private RestTemplate restTemplate;
 	
@@ -35,7 +39,7 @@ public class PersonService {
 		
 		PersonDto d = new PersonDto();
 		
-		Person p = personRepository.findById(dto.getId())
+		Person p = personRepository.findById((Integer) dto.getId())
 				.orElseThrow(()->new PersonException("Id Not Found"));
 
 		d.setId(p.getId());
@@ -63,7 +67,7 @@ public class PersonService {
 		PersonDto d = new PersonDto();
 
 		d.setEmail(res.getBody().getEmail());
-		d.setId(p.getId());
+		d.setId((Integer) p.getId());
 		d.setName(res.getBody().getName());
 		
 		return d;
@@ -80,5 +84,23 @@ public class PersonService {
 		person.setEmail(p.getEmail());
 
 		personRepository.save(person);
+	}
+
+	public Person getpersonRedis(PersonRequestDto p) throws JsonMappingException, JsonProcessingException {
+
+		String ps= null;
+		try {
+			ps = redistemplate.opsForValue().get(p.getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(ps ==null) {
+			throw new PersonException("Id Not Found");
+		}
+
+		Person person = new ObjectMapper().readValue(ps, Person.class);
+
+		return person;
 	}
 }

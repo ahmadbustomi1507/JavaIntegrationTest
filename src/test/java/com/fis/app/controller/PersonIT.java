@@ -39,12 +39,6 @@ public class PersonIT extends Environment {
 
 	//mvn test -Dtest=PersonIT#personAPIThirdPartyNegativeTest
 
-	@Autowired
-	private TestRestTemplate testRestTemplate;
-	private String getPersonAPI() {
-		return "/api/get-data";
-	}
-
 	/**
 	 * TEST POSITIVE CASE /api/get-data
 	 * 
@@ -57,20 +51,20 @@ public class PersonIT extends Environment {
 	 * @throws JsonProcessingException
 	 */
 	@Order(1)
+	@CsvFileSource(resources = "/files/personTestCase.csv", numLinesToSkip = 1, delimiter = ';')
 	@Sql(value = { "classpath:db/personDataIT.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 	@ParameterizedTest(name = "[{index}] {0} {1}")
-	@CsvFileSource(resources = "/files/personTestCase.csv", numLinesToSkip = 1, delimiter = ';')
 	@Description("before method description")
 	public void personAPIPositiveTest(String no, String testName, String request, Integer httpStatus, String response) throws JsonMappingException, JsonProcessingException {
 		Allure.description(testName);
-		log.info("my request " + request);
 		PersonRequestDto personRequest = this.mapper().readValue(request, PersonRequestDto.class);
 		PersonDto personResponseExpected = this.mapper().readValue(response, PersonDto.class);
-		log.info("send request");
 		ResponseEntity<PersonDto> responseApi = testRestTemplate.postForEntity(this.getPersonAPI(), personRequest, PersonDto.class);
-		log.info("testing " + responseApi.toString());
-		log.info("testing " + responseApi.getBody());
-		log.info("success send request");
+
+		ObjectWriter responseObject = this.mapper().writer().withDefaultPrettyPrinter();
+		String res = responseObject.writeValueAsString(responseApi);
+		log.info("response :\n" + res);
+
 		assertEquals(httpStatus, responseApi.getStatusCode().value());
 		assertEquals(personResponseExpected.getEmail(), responseApi.getBody().getEmail());
 		assertEquals(personResponseExpected.getName(), responseApi.getBody().getName());

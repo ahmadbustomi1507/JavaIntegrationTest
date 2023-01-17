@@ -32,14 +32,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Environment {
 	@Autowired
 	protected RedisTemplate<String, String> redisTemplate;
-//	@Autowired
-//	protected TestRestTemplate testRestTemplate;
+	@Autowired
+	protected TestRestTemplate testRestTemplate;
 	@Autowired
 	protected RedisTemplate<String, String> redistemplate;
 	@Autowired
 	protected KafkaProducerService kafkaProducerService;
 
-	@MockBean
+//	@MockBean
+//	protected PersonService personService;
+	@Autowired
 	protected PersonService personService;
 
 	@Value("${spring.kafka.topic.name}")
@@ -77,9 +79,9 @@ public class Environment {
 		postgreDBContainer.start();
 		mockServerContainer.start();
 	}
-//	protected String getPersonAPI() {
-//		return "/api/get-data";
-//	}
+	protected String getPersonAPI() {
+		return "/api/get-data";
+	}
 	protected String getPersonAPIThirdParty() {
 		return "/api/get-data-from-third-party";
 	}
@@ -108,15 +110,15 @@ public class Environment {
 		Kafka Consumer & Producer Configuration
 		 */
 		registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
-		// TODO - replace this with test container
-		registry.add("spring.datasource.url", () -> "jdbc:h2:mem:test");
-		registry.add("spring.datasource.driverClassName", () -> "org.h2.Driver");
-		registry.add("spring.flyway.enabled", () -> "false");
+//		// TODO - replace this with test container
+//		registry.add("spring.datasource.url", () -> "jdbc:h2:mem:test");
+//		registry.add("spring.datasource.driverClassName", () -> "org.h2.Driver");
+//		registry.add("spring.flyway.enabled", () -> "false");
 
 		//For Redis
-		registry.add("testcontainer.redis.host", ()-> redis.getHost());
-		registry.add("testcontainer.redis.port", ()-> redis.getMappedPort(REDIS_PORT));
-		registry.add("testcontainer.redis.password", ()-> "password");
+		registry.add("spring.redis.host", ()-> redis.getHost());
+		registry.add("spring.redis.port", ()-> redis.getMappedPort(REDIS_PORT));
+		registry.add("spring.redis.password", ()-> "password");
 
 		// config 3rd party url with mockserver
 		registry.add("mock.server.endpoint", mockServerContainer::getEndpoint);

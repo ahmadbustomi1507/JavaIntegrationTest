@@ -30,7 +30,7 @@ public class PersonController {
 	public PersonDto getPersonFromThirdParty (@RequestBody PersonRequestDto p) throws Exception {
 		return personService.getPersonFromThirdParty(p);
 	}
-	@PostMapping("api/get-person")
+	@PostMapping("/api/get-person")
 	@Transactional
 	public Person getpersonredis(@RequestBody PersonRequestDto p) throws JsonMappingException, JsonProcessingException {
 		return personService.getpersonRedis(p);

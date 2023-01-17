@@ -24,6 +24,8 @@ import static org.mockito.Mockito.verify;
 public class kafkaServiceIT extends Environment {
     // mvn test -Dtest=kafkaServiceIT#sampleKafkaProduceAndConsumeTest
 
+
+
     @Order(1)
     @ParameterizedTest
     @CsvFileSource(resources = "/files/sampleKafkaTest.csv", numLinesToSkip = 1, delimiter = ';')

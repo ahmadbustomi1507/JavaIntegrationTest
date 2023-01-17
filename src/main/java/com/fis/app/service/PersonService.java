@@ -90,7 +90,7 @@ public class PersonService {
 
 		String ps= null;
 		try {
-			ps = redistemplate.opsForValue().get(p.getId());
+			ps = redistemplate.opsForValue().get(Integer.toString(p.getId()));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

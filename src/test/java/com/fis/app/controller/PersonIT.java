@@ -53,7 +53,7 @@ public class PersonIT extends Environment {
 	@Order(1)
 	@CsvFileSource(resources = "/files/personTestCase.csv", numLinesToSkip = 1, delimiter = ';')
 	@Sql(value = { "classpath:db/personDataIT.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-	@ParameterizedTest(name = "[{index}] {0} {1}")
+	@ParameterizedTest(name = "{index} {0} - {1}")
 	@Description("before method description")
 	public void personAPIPositiveTest(String no, String testName, String request, Integer httpStatus, String response) throws JsonMappingException, JsonProcessingException {
 		Allure.description(testName);
@@ -72,7 +72,7 @@ public class PersonIT extends Environment {
 
 	@Order(2)
 	@Sql(value = { "classpath:db/personDataIT.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-	@ParameterizedTest
+	@ParameterizedTest(name = "{index} {0} - {1}")
 	@CsvFileSource(resources = "/files/personNegativeTestCase.csv", numLinesToSkip = 1, delimiter = ';')
 	public void personAPINegativeTest(String no, String testName, String request, Integer httpStatus, String response) throws JsonMappingException, JsonProcessingException {
 		log.info("Executing Test : "+no + " " +testName );
@@ -88,7 +88,7 @@ public class PersonIT extends Environment {
 	}
 
 	@Order(3)
-	@ParameterizedTest
+	@ParameterizedTest(name = "{index} {0} - {1}")
 	@CsvFileSource(resources = "/files/personThirdPartyTestCase.csv", numLinesToSkip = 1, delimiter = ';')
 	public void personAPIThirdPartyTest(String no, String testName, String request, Integer httpStatus, String response, String mockExpected, Integer mockQueryparam) throws JsonMappingException, JsonProcessingException {
 		log.info("Executing Test : "+no);
@@ -124,7 +124,7 @@ public class PersonIT extends Environment {
 
 	}
 	@Order(4)
-	@ParameterizedTest
+	@ParameterizedTest(name = "{index} {0} - {1}")
 	@CsvFileSource(resources = "/files/personThirdPartyNegativeTestCase.csv", numLinesToSkip = 1, delimiter = ';')
 	public void personAPIThirdPartyNegativeTest(String no, String testName, String request,
 												Integer httpStatus, String response,

@@ -22,12 +22,10 @@ import static org.mockito.Mockito.verify;
 @DisplayName("Kafka service integration Test")
 @Log4j2
 public class kafkaServiceIT extends Environment {
-    // mvn test -Dtest=kafkaServiceIT#sampleKafkaProduceAndConsumeTest
-
-
+    // mvn test allure:report -Dtest=kafkaServiceIT#sampleKafkaProduceAndConsumeTest
 
     @Order(1)
-    @ParameterizedTest
+    @ParameterizedTest(name = "{index} {0} - {1}")
     @CsvFileSource(resources = "/files/sampleKafkaTest.csv", numLinesToSkip = 1, delimiter = ';')
     void sampleKafkaProduceAndConsumeTest(String no, String desc,String produceMessage,String consumeMessage)throws JsonMappingException, JsonProcessingException {
 

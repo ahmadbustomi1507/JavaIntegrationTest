@@ -75,7 +75,7 @@ public class Environment {
 	 * down of container after each test class executed
 	 */
 	static {
-//		redis.start();
+		redis.start();
 		postgreDBContainer.start();
 		mockServerContainer.start();
 	}
@@ -116,9 +116,9 @@ public class Environment {
 //		registry.add("spring.flyway.enabled", () -> "false");
 
 		//For Redis
-		registry.add("spring.redis.host", ()-> redis.getHost());
-		registry.add("spring.redis.port", ()-> redis.getMappedPort(REDIS_PORT));
-		registry.add("spring.redis.password", ()-> "password");
+		registry.add("testcontainer.redis.host", ()-> redis.getHost());
+		registry.add("testcontainer.redis.port", ()-> redis.getMappedPort(REDIS_PORT));
+		registry.add("testcontainer.redis.password", ()-> "password");
 
 		// config 3rd party url with mockserver
 		registry.add("mock.server.endpoint", mockServerContainer::getEndpoint);
